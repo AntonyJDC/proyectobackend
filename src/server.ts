@@ -1,7 +1,8 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import cors from "cors";
 import express from "express";
 import connectDB from "./config/db";
+import router from "./routes/user.routes";
 
 // API ROUTES IMPORTS
 
@@ -14,7 +15,8 @@ app.use(express.json());
 connectDB();
 
 // ROUTES
-const SERVER_VERSION = "/api/v1/";
+app.use('/api/users', router);
+
 
 // FALLBACKS
 
@@ -25,6 +27,9 @@ function routeNotFound(request: Request, response: Response) {
 }
 
 app.use(routeNotFound);
+
+//app.use('/api/books', bookRoutes);
+//app.use('/api/auth', authRoutes);  // Si tienes rutas de autenticación
 
 // START SERVER
 app.listen(8080, () => {
