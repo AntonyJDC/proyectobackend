@@ -1,43 +1,37 @@
 import { Schema, model, Error } from 'mongoose';
 import argon2 from 'argon2';
 
-interface IUser {
+export interface IUser {
   name: string;
   email: string;
   password: string;
   role: string;
   isActive: boolean;
+  reservations?: Array<{
+    bookId: Schema.Types.ObjectId;
+    reservedAt: Date;
+    returnedAt?: Date;
+  }>;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const userSchema = new Schema<IUser>({
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user',
-  },
-  isActive: {
-    type: Boolean,
-    default: true,
-  },
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
+  isActive: { type: Boolean, default: true },
+  reservations: [
+    {
+      bookId: { type: Schema.Types.ObjectId, ref: 'Book' },
+      reservedAt: { type: Date, default: Date.now },
+      returnedAt: { type: Date },
+    },
+  ],
 }, {
   timestamps: true,
 });
 
-// Middleware para encriptar la contraseña antes de guardar
 userSchema.pre('save', async function (next) {
   const user = this;
   if (!user.isModified('password')) return next();

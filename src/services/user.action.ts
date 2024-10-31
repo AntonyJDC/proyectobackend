@@ -1,11 +1,18 @@
-import { UserModel, UserType } from "../models/user.model";
+import User, { IUser } from '../models/user.model';
 
-// DECLARE ACTION FUNCTION
-async function readUserAction(): Promise<UserType[]> {
-  const results = await UserModel.find();
+export const getUserById = async (userId: string): Promise<IUser | null> => {
+  const user = await User.findById(userId).select('-password');
+  if (!user) throw new Error('User not found');
+  return user;
+};
 
-  return results;
-}
+export const updateUserById = async (userId: string, updates: Partial<IUser>): Promise<IUser | null> => {
+  const user = await User.findByIdAndUpdate(userId, updates, { new: true, runValidators: true }).select('-password');
+  if (!user) throw new Error('User not found');
+  return user;
+};
 
-// EXPORT ACTION FUNCTION
-export default readUserAction;
+export const deactivateUserById = async (userId: string): Promise<void> => {
+  const user = await User.findByIdAndUpdate(userId, { isActive: false });
+  if (!user) throw new Error('User not found');
+};
