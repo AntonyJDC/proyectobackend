@@ -1,7 +1,6 @@
+import { Request } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
-declare module 'express-serve-static-core' {
-  interface Request {
-    user?: string | JwtPayload;  // Ajusta el tipo según lo que decodifiques del token
-  }
+export interface AuthRequest extends Request {
+  user?: JwtPayload & { id: string };
 }

@@ -1,37 +1,35 @@
-import type { Request, Response } from "express";
+import express, { Application } from 'express';
+import dotenv from 'dotenv';
+import authRoutes from './routes/auth.routes';
 import cors from "cors";
-import express from "express";
+import userRoutes from './routes/user.routes';
 import connectDB from "./config/db";
-import router from "./routes/user.routes";
 
-// API ROUTES IMPORTS
+const PORT = process.env.PORT || 8080;
 
-// MIDDLEWARES
-const app = express();
+// Configuración de variables de entorno
+dotenv.config();
 
-app.use(cors());
-app.use(express.json());
+const app: Application = express();
 
+// Conexión a la base de datos
 connectDB();
 
-// ROUTES
-app.use('/api/users', router);
+// Middlewares
+app.use(cors());
+app.use(express.json()); // Middleware para parsear JSON en las solicitudes
 
+// Rutas
+app.use('/api/auth', authRoutes); // Rutas de autenticación
+app.use('/api/user', userRoutes); // Rutas de usuario, protegidas por autenticación
+//app.use('/api/books', bookRoutes); // Rutas de libros
 
-// FALLBACKS
+// Manejo de errores para rutas no encontradas
+app.use((req, res) => {
+  res.status(404).json({ message: 'Endpoint not found' });
+});
 
-function routeNotFound(request: Request, response: Response) {
-  response.status(404).json({
-    message: "Route not found.",
-  });
-}
-
-app.use(routeNotFound);
-
-//app.use('/api/books', bookRoutes);
-//app.use('/api/auth', authRoutes);  // Si tienes rutas de autenticación
-
-// START SERVER
-app.listen(8080, () => {
-  console.log("Server listening to port 8080.");
+// Iniciar el servidor
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
