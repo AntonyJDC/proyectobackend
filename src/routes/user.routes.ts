@@ -1,10 +1,11 @@
 import { Router } from 'express';
-import { updateUser, deactivateUser } from '../controllers/user.controller';
+import { updateUser, desactivateUser } from '../controllers/user.controller';
 import authMiddleware from '../middlewares/authMiddleware';
+import {updateUserpermissionMiddleware, deleteUserpermissionMiddleware} from '../middlewares/permissionMiddleware';
 
 const router = Router();
 
-router.put('/update', authMiddleware, updateUser);
-router.delete('/deactivate', authMiddleware, deactivateUser);
+router.put('/update/:userId?', authMiddleware, updateUserpermissionMiddleware, updateUser);
+router.delete('/desactivate/:userId?', authMiddleware, deleteUserpermissionMiddleware, desactivateUser);
 
 export default router;
