@@ -1,71 +1,56 @@
 import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../custom';
 
-export const updateUserpermissionMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const userIdFromParams = req.params.userId || req.user?.id;;
+export const updateUserPermissionMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
+    const userIdFromParams = req.params.userId || req.user?.id;
     const userIdFromToken = req.user?.id;
-    const hasEditPermission = req.user?.permissions?.includes('edit_users');
 
     // Permitir si el usuario tiene permiso de editar usuarios o si el usuario está modificando su propio perfil
-    if (hasEditPermission || userIdFromToken === userIdFromParams) {
+    if (req.user?.hasPermission('edit_user') || userIdFromToken === userIdFromParams) {
         return next();
     }
 
     return res.status(403).json({ message: 'Access denied' });
 };
 
-
-export const deleteUserpermissionMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const userIdFromParams = req.params.userId || req.user?.id;;
+export const deleteUserPermissionMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
+    const userIdFromParams = req.params.userId || req.user?.id;
     const userIdFromToken = req.user?.id;
-    const hasEditPermission = req.user?.permissions?.includes('delete_users');
 
-    // Permitir si el usuario tiene permiso de editar usuarios o si el usuario está modificando su propio perfil
-    if (hasEditPermission || userIdFromToken === userIdFromParams) {
+    // Permitir si el usuario tiene permiso de eliminar usuarios o si el usuario está eliminando su propio perfil
+    if (req.user?.hasPermission('delete_user') || userIdFromToken === userIdFromParams) {
         return next();
     }
 
     return res.status(403).json({ message: 'Access denied' });
 };
 
+export const updateBookPermissionMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
 
-export const updateBookpermissionMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const userIdFromParams = req.params.userId || req.user?.id;;
-    const userIdFromToken = req.user?.id;
-    const hasEditPermission = req.user?.permissions?.includes('edit_books');
-
-    // Permitir si el usuario tiene permiso de editar usuarios o si el usuario está modificando su propio perfil
-    if (hasEditPermission || userIdFromToken === userIdFromParams) {
+    // Permitir si el usuario tiene permiso de editar libros
+    if (req.user?.hasPermission('edit_book')) {
         return next();
     }
 
     return res.status(403).json({ message: 'Access denied' });
 };
 
-export const deleteBookpermissionMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const userIdFromParams = req.params.userId || req.user?.id;;
-    const userIdFromToken = req.user?.id;
-    const hasEditPermission = req.user?.permissions?.includes('delete_books');
+export const deleteBookPermissionMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
 
-    // Permitir si el usuario tiene permiso de editar usuarios o si el usuario está modificando su propio perfil
-    if (hasEditPermission || userIdFromToken === userIdFromParams) {
+    // Permitir si el usuario tiene permiso de eliminar libros
+    if (req.user?.hasPermission('delete_book')) {
         return next();
     }
 
     return res.status(403).json({ message: 'Access denied' });
 };
 
-export const createBookpermissionMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const userIdFromParams = req.params.userId || req.user?.id;;
-    const userIdFromToken = req.user?.id;
-    const hasEditPermission = req.user?.permissions?.includes('create_books');
+export const createBookPermissionMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
 
-    // Permitir si el usuario tiene permiso de editar usuarios o si el usuario está modificando su propio perfil
-    if (hasEditPermission || userIdFromToken === userIdFromParams) {
+    // Permitir si el usuario tiene permiso de crear libros
+    if (req.user?.hasPermission('create_book')) {
         return next();
     }
 
     return res.status(403).json({ message: 'Access denied' });
 };
-
-
