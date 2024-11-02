@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import cors from "cors";
 import userRoutes from './routes/user.routes';
+import bookRoutes from './routes/books.routes';
 import connectDB from "./config/db";
 
 const PORT = process.env.PORT || 8080;
@@ -17,12 +18,12 @@ connectDB();
 
 // Middlewares
 app.use(cors());
-app.use(express.json()); // Middleware para parsear JSON en las solicitudes
+app.use(express.json());
 
 // Rutas
 app.use('/api/auth', authRoutes); // Rutas de autenticación
-app.use('/api/user', userRoutes); // Rutas de usuario, protegidas por autenticación
-//app.use('/api/books', bookRoutes); // Rutas de libros
+app.use('/api/user', userRoutes); // Rutas de usuario
+app.use('/api/books', bookRoutes); // Rutas de libros
 
 // Manejo de errores para rutas no encontradas
 app.use((req, res) => {
