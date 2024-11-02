@@ -26,9 +26,20 @@ Este proyecto es el backend de una plataforma de biblioteca que permite a los us
 
 ## Rutas Principales
 
+### Autenticación
+- `POST /auth/register`: Permite registrar a un nuevo usuario en la plataforma.
+- `POST /auth/login`: Inicia sesión para un usuario registrado, generando un token de autenticación.
+
 ### Usuarios
-- `PUT /update/:userId?`: Actualiza un usuario específico. Si no se proporciona `userId`, se actualiza el usuario logueado.
-- `DELETE /deactivate/:userId?`: Desactiva un usuario específico. Si no se proporciona `userId`, se desactiva el usuario logueado.
+- `PUT /user/update/:userId?`: Actualiza un usuario específico. Si no se proporciona `userId`, se actualiza el usuario logueado.
+- `DELETE /user/desactivate/:userId?`: Desactiva un usuario específico. Si no se proporciona `userId`, se desactiva el usuario logueado.
+
+### Libros
+- `POST /books/create`: Crea un nuevo libro en la plataforma. Requiere permisos específicos para la creación.
+- `GET /books/:bookid?`: Obtiene una lista de libros con la posibilidad de aplicar filtros combinados, como género, fecha de publicación, casa editorial, autor, nombre y disponibilidad u obtiene los detalles de un libro específico basado en su `bookId` si es especificado.
+- `PUT /books/update/:bookId`: Actualiza la información de un libro específico. Requiere permisos específicos para la edición.
+- `DELETE /books/delete/:bookId`: Realiza un soft delete del libro específico. Requiere permisos específicos para la eliminación.
+- `POST /books/reserve/:bookId`: Realiza la actualización de los datos de reserva de un libro, agregando información como `userId` del usuario que está reservando junto a `reservedDate` y `returnDate`.
 
 ## Configuración
 
