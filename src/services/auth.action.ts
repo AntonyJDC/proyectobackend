@@ -15,7 +15,7 @@ export const loginUser = async (email: string, password: string) => {
   const isMatch = await user.comparePassword(password);
   if (!isMatch) throw new Error('Invalid credentials');
 
-  const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET!, {
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
     expiresIn: '1h',
   });
   return { user, token };
