@@ -51,7 +51,7 @@ Este proyecto es el backend de una plataforma de biblioteca que permite a los us
    ```bash
    npm install
    ```
-3. Configura las variables de entorno en un archivo `.env` en la raíz del proyecto.
+3. Configura las variables de entorno en modificando el archivo `.env.template` que está ubicado en la raíz del proyecto.
 4. Inicia el servidor:
    ```bash
    npm run dev
@@ -61,7 +61,7 @@ Este proyecto es el backend de una plataforma de biblioteca que permite a los us
 
 El proyecto incluye un middleware de permisos que verifica si un usuario tiene autorización para realizar modificaciones en otros usuarios. Si el `userId` en la URL coincide con el del token del usuario autenticado o si el usuario tiene permisos, se le permite realizar la acción solicitada.
 
-## Requisitos Técnicos
+## Requisitos
 
 - **Node.js**: Versión 14 o superior.
 - **Express**: Para la configuración de rutas y middleware.
